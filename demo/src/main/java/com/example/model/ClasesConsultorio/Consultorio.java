@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import com.example.model.Patrones.Iterador.Iterador;
+import com.example.model.Patrones.Iterador.IteradorMedicosActivos;
+
 public class Consultorio {
 
     private String nombre;
@@ -110,6 +113,10 @@ public class Consultorio {
     public void eliminarPersona(Persona persona, Collection<Persona> lista) {
         lista.remove(persona);
     }
+
+    public Iterador<Medico> crearIteradorMedicosActivos() {
+    return new IteradorMedicosActivos(doctores);
+}
 
 
 
