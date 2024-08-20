@@ -7,14 +7,14 @@ import java.util.Collection;
 public class Medico extends Persona {
 
     private String especialidad;
-    private EstadoDoctor estado;
+    private EstadoMedico estado;
     private final Collection<Cita> citasPendientes;
 
-     public Medico(String nombre, String id, LocalDate fechaNacimiento, String especialidad) {
+    public Medico(String nombre, String id, LocalDate fechaNacimiento, String especialidad) {
         super(nombre,id,fechaNacimiento);
         this.especialidad = especialidad;
         this.citasPendientes = new ArrayList<>();
-        this.estado = EstadoDoctor.ACTIVO;
+        this.estado = EstadoMedico.ACTIVO;
     }
 
     public String getEspecialidad() {
@@ -29,15 +29,15 @@ public class Medico extends Persona {
         return citasPendientes;
     }
 
-    public EstadoDoctor getEstado() {
+    public EstadoMedico getEstado() {
         return estado;
     }
 
     public void cambiarEstado() {
-        if (estado == EstadoDoctor.ACTIVO) {
-            this.estado = EstadoDoctor.INACTIVO;
+        if (estado == EstadoMedico.ACTIVO) {
+            this.estado = EstadoMedico.INACTIVO;
         } else {
-            this.estado = EstadoDoctor.ACTIVO;
+            this.estado = EstadoMedico.ACTIVO;
         }
     }
 

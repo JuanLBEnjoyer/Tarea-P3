@@ -1,6 +1,6 @@
 package com.example.model.ClasesConsultorio;
 
-public enum EstadoDoctor {
+public enum EstadoMedico {
 
     ACTIVO, INACTIVO
     

@@ -17,6 +17,7 @@ public class Consultorio {
     private Collection<Paciente> pacientes;
     private Collection<Medico> doctores;
     private static Consultorio instanciaUnica;
+    private AdministradorCitas administradorCitas;
 
 
     private Consultorio(String nombre, String direccion){
@@ -116,6 +117,11 @@ public class Consultorio {
 
     public Iterador<Medico> crearIteradorMedicosActivos() {
     return new IteradorMedicosActivos(doctores);
+}
+
+public AdministradorCitas crearAdministrador(){
+    this.administradorCitas = new AdministradorCitas(this);
+    return this.administradorCitas;
 }
 
 

@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.example.model.ClasesConsultorio.EstadoDoctor;
+import com.example.model.ClasesConsultorio.EstadoMedico;
 import com.example.model.ClasesConsultorio.Medico;
 
 public class IteradorMedicosActivos implements Iterador<Medico> {
@@ -14,7 +14,7 @@ public class IteradorMedicosActivos implements Iterador<Medico> {
 
     public IteradorMedicosActivos(Collection<Medico> medicos){
         this.medicosActivos = medicos.stream().
-        filter(m->m.getEstado()==EstadoDoctor.ACTIVO)
+        filter(m->m.getEstado()==EstadoMedico.ACTIVO)
         .collect(Collectors.toList());
 
         this.posicion = 0;
