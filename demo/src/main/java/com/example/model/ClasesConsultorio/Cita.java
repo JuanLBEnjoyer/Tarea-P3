@@ -86,17 +86,5 @@ public class Cita {
             pacienteAsociado.eliminarCitaProgramada(this);
         }
     }
-
-    public void cancelarCita() {
-        this.estadoCita = EstadoCita.CANCELADA;
-        Medico doctorAsociado = getMedico();
-        Paciente pacienteAsociado = getPaciente();
-        if (doctorAsociado != null) {
-            doctorAsociado.eliminarCitaPendiente(this);
-        }
-        if (pacienteAsociado != null) {
-            pacienteAsociado.eliminarCitaProgramada(this);
-        }
-    }
     
 }

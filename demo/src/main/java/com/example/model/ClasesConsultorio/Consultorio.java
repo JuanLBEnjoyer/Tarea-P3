@@ -76,11 +76,6 @@ public class Consultorio {
         return instanciaUnica;
     }
 
-
-    public static void setInstanciaUnica(Consultorio instanciaUnica) {
-        Consultorio.instanciaUnica = instanciaUnica;
-    }
-
     public static Consultorio obtenerInstancia(String nombre, String direccion) {
         if (instanciaUnica == null) {
             instanciaUnica = new Consultorio(nombre, direccion);
@@ -122,6 +117,26 @@ public class Consultorio {
 public AdministradorCitas crearAdministrador(){
     this.administradorCitas = new AdministradorCitas(this);
     return this.administradorCitas;
+}
+
+public Optional<Cita> buscarCitaMedico(Cita cita, Medico medico){
+    return medico.getCitasPendientes().stream().filter(c->c.equals(cita)).findAny();
+}
+
+public boolean valdidarCitaMedico(Cita cita, Medico medico){
+
+    return buscarCitaMedico(cita, medico).isPresent();
+
+}
+
+public Optional<Cita> buscarCitaPaciente(Cita cita, Paciente paciente){
+    return paciente.getCitasProgramadas().stream().filter(c->c.equals(cita)).findAny();
+}
+
+public boolean valdidarCitaPaciente(Cita cita, Paciente paciente){
+
+    return buscarCitaPaciente(cita, paciente).isPresent();
+
 }
 
 

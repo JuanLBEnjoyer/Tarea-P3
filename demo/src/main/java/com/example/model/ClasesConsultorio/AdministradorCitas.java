@@ -100,8 +100,14 @@ public class AdministradorCitas implements Sujeto {
         return crucesPaciente || crucesMedico || diferenciaHoraPaciente || diferenciaHoraDoctor;
     }
 
+    public void cancelarCita(Cita cita) {
+        cita.setEstadoCita(EstadoCita.CANCELADA);
+        if (consultorio.valdidarCitaMedico(cita, cita.getMedico())){
+        cita.getMedico().eliminarCitaPendiente(cita);
+            }
+        else if(consultorio.valdidarCitaPaciente(cita, cita.getPaciente())){
+            cita.getPaciente().eliminarCitaProgramada(cita);
+        }
+    }
 
-
-
-    
 }
