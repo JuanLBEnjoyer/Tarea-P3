@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import com.example.model.Patrones.Iterador.Iterador;
 import com.example.model.Patrones.Iterador.IteradorMedicosActivos;
+
 
 public class Consultorio {
 
@@ -62,12 +62,12 @@ public class Consultorio {
     }
 
 
-    public Collection<Medico> getDoctores() {
+    public Collection<Medico> getMedicos() {
         return doctores;
     }
 
 
-    public void setDoctores(Collection<Medico> doctores) {
+    public void setMedicos(Collection<Medico> doctores) {
         this.doctores = doctores;
     }
 
@@ -83,43 +83,68 @@ public class Consultorio {
         return instanciaUnica;
     }
 
-    public Persona buscarPersona(String id, Collection<Persona> lista){
-        Predicate<Persona> condicion = p -> p.getId().equals(id);
-        Optional<Persona> persona = lista.stream().filter(condicion).findFirst();
-        return persona.orElse(null);
+    public Paciente buscarPaciente(String id) {
+        return pacientes.stream()
+                .filter(paciente -> paciente.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public Optional<Persona> verificarPersona(Persona persona, Collection<Persona> lista){
-        Predicate<Persona> condicion = p->p.getId().equals(persona.getId());
-        return lista.stream().filter(condicion).findAny();
+    public Medico buscarMedico(String id) {
+        return doctores.stream()
+                .filter(medico -> medico.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    private void validarPersonaExiste(Persona persona, Collection<Persona> lista) {
-        boolean existePersona = verificarPersona(persona, lista).isPresent();
-        if (existePersona) {
-            throw new PersonaExistenteException("La persona con ID " + persona.getId() + " ya existe");
+    private void validarPacienteExiste(Paciente paciente) {
+        if (pacientes.contains(paciente)) {
+            throw new PersonaExistenteException("El paciente con ID " + paciente.getId() + " ya existe");
         }
     }
 
-    public void agregarPersona(Persona persona, Collection<Persona> lista){
-        validarPersonaExiste(persona, lista);
-        lista.add(persona);
+    private void validarMedicoExiste(Medico medico) {
+        if (doctores.contains(medico)) {
+            throw new PersonaExistenteException("El médico con ID " + medico.getId() + " ya existe");
+        }
     }
 
-    public void eliminarPersona(Persona persona, Collection<Persona> lista) {
-        lista.remove(persona);
-    }
-
-    public Iterador<Medico> crearIteradorMedicosActivos() {
-    return new IteradorMedicosActivos(doctores);
+   public void agregarPaciente(Paciente paciente) {
+    validarPacienteExiste(paciente);
+    pacientes.add(paciente);
 }
+
+public void agregarMedico(Medico medico) {
+    validarMedicoExiste(medico);
+    doctores.add(medico);
+}
+
+    public void eliminarPaciente(Paciente paciente) {
+        if (pacientes.contains(paciente)) {
+            pacientes.remove(paciente);
+        } else {
+            throw new IllegalArgumentException("El paciente con ID " + paciente.getId() + " no existe.");
+        }
+    }
+
+    public void eliminarMedico(Medico medico) {
+        if (doctores.contains(medico)) {
+            doctores.remove(medico);
+        } else {
+            throw new IllegalArgumentException("El médico con ID " + medico.getId() + " no existe.");
+        }
+    }
 
 public AdministradorCitas crearAdministrador(){
     this.administradorCitas = new AdministradorCitas(this);
     return this.administradorCitas;
 }
 
-public Optional<Cita> buscarCitaMedico(Cita cita, Medico medico){
+public Iterador<Medico> crearIteradorMedicosActivos() {
+    return new IteradorMedicosActivos(doctores);
+}
+
+private Optional<Cita> buscarCitaMedico(Cita cita, Medico medico){
     return medico.getCitasPendientes().stream().filter(c->c.equals(cita)).findAny();
 }
 
@@ -129,7 +154,7 @@ public boolean valdidarCitaMedico(Cita cita, Medico medico){
 
 }
 
-public Optional<Cita> buscarCitaPaciente(Cita cita, Paciente paciente){
+private Optional<Cita> buscarCitaPaciente(Cita cita, Paciente paciente){
     return paciente.getCitasProgramadas().stream().filter(c->c.equals(cita)).findAny();
 }
 

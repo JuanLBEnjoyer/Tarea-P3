@@ -8,8 +8,7 @@ import com.example.model.ClasesConsultorio.EstadoMedico;
 import com.example.model.ClasesConsultorio.Medico;
 
 public class IteradorMedicosActivos implements Iterador<Medico> {
-
-    private final List<Medico> medicosActivos;
+     private final List<Medico> medicosActivos;
     private int posicion;
 
     public IteradorMedicosActivos(Collection<Medico> medicos){
@@ -34,7 +33,4 @@ public class IteradorMedicosActivos implements Iterador<Medico> {
         }
         return null; 
     }
-
-
-    
 }

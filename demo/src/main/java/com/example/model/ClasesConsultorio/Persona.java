@@ -2,7 +2,7 @@ package com.example.model.ClasesConsultorio;
 
 import java.time.LocalDate;
 
-public class Persona {
+public  abstract class Persona {
 
     private String nombre;
     private String id;

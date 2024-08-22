@@ -54,7 +54,7 @@ public class AdministradorCitas implements Sujeto {
                 .forEach(cita -> notificarObservers("Recordatorio: Tienes una cita mañana. Motivo: " + cita.getMotivo()));
     }
 
-    public void programarCita(LocalDateTime fechaHoraCita, Paciente paciente, String motivo, String salaCita) {
+    public Cita programarCita(LocalDateTime fechaHoraCita, Paciente paciente, String motivo, String salaCita) {
         Iterador<Medico> iteradorMedicos = consultorio.crearIteradorMedicosActivos();
 
         if (!iteradorMedicos.hasNext()) {
@@ -80,6 +80,8 @@ public class AdministradorCitas implements Sujeto {
         if (!contieneObserver(paciente)) {
             addObserver(paciente);
         }
+
+        return nuevaCita;
     }
 
     private boolean verificarCruceCitas(LocalDateTime fechaHoraCita, Paciente paciente, Medico medico) {

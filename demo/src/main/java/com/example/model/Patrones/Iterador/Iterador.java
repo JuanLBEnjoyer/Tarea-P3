@@ -8,4 +8,5 @@ public interface Iterador<T> extends Iterator<T> {
 
     T next();
     
+    
 }
