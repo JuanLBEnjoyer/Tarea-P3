@@ -74,12 +74,4 @@ public class Cita {
             this.estadoCita = EstadoCita.EN_CURSO;
         }
     }
-    @Override
-    public String toString() {
-        return "Cita [fechaHoraCita=" + fechaHoraCita + ", paciente=" + paciente + ", medico=" + medico + ", motivo="
-                + motivo + ", estadoCita=" + estadoCita + ", salaCita=" + salaCita + "]";
-    }
-
-    
-    
 }
