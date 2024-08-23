@@ -37,6 +37,5 @@ public class Medico extends Persona {
 
     public void eliminarCitaPendiente(Cita cita) {
         citasPendientes.remove(cita);
-    }    
-    
+    }
 }

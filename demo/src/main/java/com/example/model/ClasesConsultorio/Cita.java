@@ -74,19 +74,6 @@ public class Cita {
             this.estadoCita = EstadoCita.EN_CURSO;
         }
     }
-
-    public void finalizarCita() {
-        this.estadoCita = EstadoCita.FINALIZADA;
-        Medico doctorAsociado = getMedico();
-        Paciente pacienteAsociado = getPaciente();
-        if (doctorAsociado != null) {
-            doctorAsociado.eliminarCitaPendiente(this);
-        }
-        if (pacienteAsociado != null) {
-            pacienteAsociado.eliminarCitaProgramada(this);
-        }
-    }
-
     @Override
     public String toString() {
         return "Cita [fechaHoraCita=" + fechaHoraCita + ", paciente=" + paciente + ", medico=" + medico + ", motivo="

@@ -13,30 +13,52 @@ import com.example.model.ClasesConsultorio.Paciente;
 public class Prueba {
 
     public static void main(String[] args) {
+        // Crear el consultorio
+        Consultorio consultorio = Consultorio.obtenerInstancia("Consultorio XYZ", "123 Calle Principal");
+        AdministradorCitas adminCitas = consultorio.crearAdministrador();
 
-        Consultorio c1 = Consultorio.obtenerInstancia("Consultorio 1", "Calle 10");
-       AdministradorCitas admin = c1.crearAdministrador();
+        // Crear médicos
+        Medico medico1 = new Medico("Dr. Juan Pérez", "M123", LocalDate.of(1980, 5, 15));
+        Medico medico2 = new Medico("Dr. Laura Gómez", "M124", LocalDate.of(1975, 8, 22));
+        consultorio.getMedicos().add(medico1);
+        consultorio.getMedicos().add(medico2);
 
-        Paciente paciente = new Paciente("Manolito", "12345", LocalDate.of(2015, 4, 24));
-        Paciente paciente2 = new Paciente("Carlitos", "54321", LocalDate.of(1999, 3, 4));
+        // Crear pacientes
+        Paciente paciente1 = new Paciente("Ana Gómez", "P456", LocalDate.of(1990, 3, 25));
+        Paciente paciente2 = new Paciente("Luis Martínez", "P457", LocalDate.of(1985, 7, 30));
+        consultorio.getPacientes().add(paciente1);
+        consultorio.getPacientes().add(paciente2);
 
-        Medico medico = new Medico("Roberto", "67890", LocalDate.of(1970, 3, 12));
-        Medico medico2 = new Medico("John", "09876", LocalDate.of(1984, 6, 2));
+        // Programar citas
+        LocalDateTime fechaHoraCita1 = LocalDateTime.of(2024, 8, 23, 10, 0);
+        String motivo1 = "Consulta de rutina";
+        String salaCita1 = "Sala 1";
+        Cita cita1 = adminCitas.programarCita(fechaHoraCita1, paciente1, motivo1, salaCita1);
 
+        LocalDateTime fechaHoraCita2 = LocalDateTime.of(2024, 8, 24, 14, 0);
+        String motivo2 = "Chequeo dermatológico";
+        String salaCita2 = "Sala 2";
+        Cita cita2 = adminCitas.programarCita(fechaHoraCita2, paciente2, motivo2, salaCita2);
 
-        c1.agregarPaciente(paciente);
-        c1.agregarPaciente(paciente2);
-        c1.agregarMedico(medico);
-        c1.agregarMedico(medico2);
- 
+        // Mostrar citas programadas
+        System.out.println("Citas Programadas:");
+        consultorio.getPacientes().forEach(paciente -> {
+            paciente.getCitasProgramadas().forEach(System.out::println);
+        });
 
-        Cita cita1 = admin.programarCita(LocalDateTime.of( 2024, 9, 3, 12, 30), paciente, "Seguimiento de Tratamiento", "203");
+        // Cancelar una cita
+        adminCitas.cancelarCita(cita1);
 
-        System.out.println(cita1.toString());
+        // Finalizar una cita
+        adminCitas.finalizarCita(cita2);
 
-        System.out.println("citas programadas"+medico.getCitasPendientes());
-        System.out.println("citas programadas"+medico2.getCitasPendientes());
-        
+        // Mostrar historial de citas
+        System.out.println("\nHistorial de Citas:");
+        consultorio.getHistorialCitas().forEach(System.out::println);
+
+        // Verificar próximas citas
+        System.out.println("\nVerificar próximas citas para paciente1:");
+        adminCitas.verficarProximasCitasPaciente(paciente1);
     }
     
 }

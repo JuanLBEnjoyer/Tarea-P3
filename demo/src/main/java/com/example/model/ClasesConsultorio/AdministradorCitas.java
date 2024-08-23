@@ -47,9 +47,10 @@ public class AdministradorCitas implements Sujeto {
     }
 
     @Override
-    public void verficarProximasCitas(Collection<Cita> citas) {
+
+    public void verficarProximasCitasPaciente(Paciente paciente) {
         LocalDate hoy = LocalDate.now();
-        citas.stream()
+        paciente.getCitasProgramadas().stream()
                 .filter(cita -> cita.getFechaHoraCita().toLocalDate().isEqual(hoy.plusDays(1)))
                 .forEach(cita -> notificarObservers("Recordatorio: Tienes una cita mañana. Motivo: " + cita.getMotivo()));
     }
@@ -110,6 +111,20 @@ public class AdministradorCitas implements Sujeto {
         else if(consultorio.valdidarCitaPaciente(cita, cita.getPaciente())){
             cita.getPaciente().eliminarCitaProgramada(cita);
         }
+        consultorio.agregarCitaAlHistorial(cita);
+    }
+
+    public void finalizarCita(Cita cita) {
+        cita.setEstadoCita(EstadoCita.FINALIZADA);
+        Medico doctorAsociado = cita.getMedico();
+        Paciente pacienteAsociado = cita.getPaciente();
+        if (doctorAsociado != null) {
+            doctorAsociado.eliminarCitaPendiente(cita);
+        }
+        if (pacienteAsociado != null) {
+            pacienteAsociado.eliminarCitaProgramada(cita);
+        }
+    consultorio.agregarCitaAlHistorial(cita);
     }
 
 }

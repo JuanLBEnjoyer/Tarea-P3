@@ -3,6 +3,7 @@ package com.example.model.ClasesConsultorio;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.model.Patrones.Iterador.Iterador;
@@ -18,6 +19,7 @@ public class Consultorio {
     private Collection<Medico> doctores;
     private static Consultorio instanciaUnica;
     private AdministradorCitas administradorCitas;
+    private List<Cita> historialCitas;
 
 
     private Consultorio(String nombre, String direccion){
@@ -26,6 +28,7 @@ public class Consultorio {
         this.fechaCreacion = LocalDate.now();
         this.pacientes = new ArrayList<Paciente>();
         this.doctores = new ArrayList<Medico>();
+        this.historialCitas = new ArrayList<Cita>();
     }
 
 
@@ -71,9 +74,12 @@ public class Consultorio {
         this.doctores = doctores;
     }
 
+    public void agregarCitaAlHistorial(Cita cita) {
+        historialCitas.add(cita);
+    }
 
-    public static Consultorio getInstanciaUnica() {
-        return instanciaUnica;
+    public List<Cita> getHistorialCitas() {
+        return historialCitas;
     }
 
     public static Consultorio obtenerInstancia(String nombre, String direccion) {
