@@ -16,7 +16,7 @@ public class Consultorio {
     private String direccion;
     private LocalDate fechaCreacion;
     private Collection<Paciente> pacientes;
-    private Collection<Medico> doctores;
+    private Collection<Medico> medicos;
     private static Consultorio instanciaUnica;
     private AdministradorCitas administradorCitas;
     private List<Cita> historialCitas;
@@ -27,7 +27,7 @@ public class Consultorio {
         this.direccion = direccion;
         this.fechaCreacion = LocalDate.now();
         this.pacientes = new ArrayList<Paciente>();
-        this.doctores = new ArrayList<Medico>();
+        this.medicos = new ArrayList<Medico>();
         this.historialCitas = new ArrayList<Cita>();
     }
 
@@ -66,12 +66,12 @@ public class Consultorio {
 
 
     public Collection<Medico> getMedicos() {
-        return doctores;
+        return medicos;
     }
 
 
-    public void setMedicos(Collection<Medico> doctores) {
-        this.doctores = doctores;
+    public void setMedicos(Collection<Medico> medicos) {
+        this.medicos = medicos;
     }
 
     public void agregarCitaAlHistorial(Cita cita) {
@@ -81,6 +81,8 @@ public class Consultorio {
     public List<Cita> getHistorialCitas() {
         return historialCitas;
     }
+
+    //Metodo del patron singleton 
 
     public static Consultorio obtenerInstancia(String nombre, String direccion) {
         if (instanciaUnica == null) {
@@ -97,7 +99,7 @@ public class Consultorio {
     }
 
     public Medico buscarMedico(String id) {
-        return doctores.stream()
+        return medicos.stream()
                 .filter(medico -> medico.getId().equals(id))
                 .findFirst()
                 .orElse(null);
@@ -110,7 +112,7 @@ public class Consultorio {
     }
 
     private void validarMedicoExiste(Medico medico) {
-        if (doctores.contains(medico)) {
+        if (medicos.contains(medico)) {
             throw new PersonaExistenteException("El médico con ID " + medico.getId() + " ya existe");
         }
     }
@@ -122,7 +124,7 @@ public class Consultorio {
 
 public void agregarMedico(Medico medico) {
     validarMedicoExiste(medico);
-    doctores.add(medico);
+    medicos.add(medico);
 }
 
     public void eliminarPaciente(Paciente paciente) {
@@ -134,8 +136,8 @@ public void agregarMedico(Medico medico) {
     }
 
     public void eliminarMedico(Medico medico) {
-        if (doctores.contains(medico)) {
-            doctores.remove(medico);
+        if (medicos.contains(medico)) {
+            medicos.remove(medico);
         } else {
             throw new IllegalArgumentException("El médico con ID " + medico.getId() + " no existe.");
         }
@@ -147,7 +149,7 @@ public AdministradorCitas crearAdministrador(){
 }
 
 public Iterador<Medico> crearIteradorMedicosActivos() {
-    return new IteradorMedicosActivos(doctores);
+    return new IteradorMedicosActivos(medicos);
 }
 
 private Optional<Cita> buscarCitaMedico(Cita cita, Medico medico){

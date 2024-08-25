@@ -8,7 +8,7 @@ import com.example.model.ClasesConsultorio.EstadoMedico;
 import com.example.model.ClasesConsultorio.Medico;
 
 public class IteradorMedicosActivos implements Iterador<Medico> {
-     private final List<Medico> medicosActivos;
+    private final List<Medico> medicosActivos;
     private int posicion;
 
     public IteradorMedicosActivos(Collection<Medico> medicos){
@@ -26,6 +26,9 @@ public class IteradorMedicosActivos implements Iterador<Medico> {
         return posicion < medicosActivos.size();
     }
 
+    //Retorna el siguiente medico en la lista de medicos activos y si no hay mas medicos retorna un valor nulo
+
+    
     @Override
     public Medico next() {
         if (hasNext()) {

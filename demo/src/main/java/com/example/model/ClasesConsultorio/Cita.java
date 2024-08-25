@@ -11,10 +11,10 @@ public class Cita {
     private EstadoCita estadoCita;
     private String salaCita;
 
-    public Cita(LocalDateTime fechaHoraCita, Paciente paciente, Medico doctor, String motivo, String salaCita) {
+    public Cita(LocalDateTime fechaHoraCita, Paciente paciente, Medico medico, String motivo, String salaCita) {
         this.fechaHoraCita = fechaHoraCita;
         this.paciente = paciente;
-        this.medico = doctor;
+        this.medico = medico;
         this.motivo = motivo;
         this.estadoCita = EstadoCita.PROGRAMADA;
         this.salaCita = salaCita;
@@ -40,8 +40,8 @@ public class Cita {
         return medico;
     }
 
-    public void setMedico(Medico doctor) {
-        this.medico = doctor;
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 
     public String getMotivo() {
@@ -67,6 +67,8 @@ public class Cita {
     public void setSalaCita(String salaCita) {
         this.salaCita = salaCita;
     }
+
+    //Metodo que actualiza el estado de la cita de "PROGRAMADA" a "EN_CURSO" utilizando fehca y hora
 
     public void actualizarEstado() {
         LocalDateTime ahora = LocalDateTime.now();

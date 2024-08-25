@@ -33,6 +33,8 @@ public class Paciente extends Persona implements Observer{
         citasProgramadas.remove(cita);
     }
 
+    //Metodo para enviar un mensaje al observer
+
     @Override
     public void update(String mensaje) {
         System.out.println("Notificación para " + getNombre() + ": " + mensaje);

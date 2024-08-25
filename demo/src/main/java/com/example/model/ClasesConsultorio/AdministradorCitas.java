@@ -42,9 +42,13 @@ public class AdministradorCitas implements Sujeto {
         observers.forEach(observer -> observer.update(mensaje));
     }
 
+    //Metodo que develve un true o false dependiendo si el observer esta registrado o no
+
     public boolean contieneObserver(Observer observer) {
         return observers.contains(observer);
     }
+
+    //Metodo que notifica a los observers si tienen una cita proxima
 
     @Override
 
@@ -54,6 +58,9 @@ public class AdministradorCitas implements Sujeto {
                 .filter(cita -> cita.getFechaHoraCita().toLocalDate().isEqual(hoy.plusDays(1)))
                 .forEach(cita -> notificarObservers("Recordatorio: Tienes una cita mañana. Motivo: " + cita.getMotivo()));
     }
+
+    //Metodo para programar una cita donde primero se elige un medico al azar para luego crearla y 
+    //agregarla a sus respectivas listas
 
     public Cita programarCita(LocalDateTime fechaHoraCita, Paciente paciente, String motivo, String salaCita) {
         Iterador<Medico> iteradorMedicos = consultorio.crearIteradorMedicosActivos();
@@ -85,6 +92,9 @@ public class AdministradorCitas implements Sujeto {
         return nuevaCita;
     }
 
+    //Metodo que se asegura de que la cita programada no se cruce diractemente con otra tanto del 
+    //paciente como del medico, tambien se verifica que el intervalo entre citas sea de minimo 1 hora
+
     private boolean verificarCruceCitas(LocalDateTime fechaHoraCita, Paciente paciente, Medico medico) {
 
         boolean crucesPaciente = paciente.getCitasProgramadas().stream()
@@ -97,11 +107,15 @@ public class AdministradorCitas implements Sujeto {
         boolean diferenciaHoraPaciente = paciente.getCitasProgramadas().stream()
                 .anyMatch(cita -> cita.getFechaHoraCita().isAfter(horaLimite));
     
-        boolean diferenciaHoraDoctor = medico.getCitasPendientes().stream()
+        boolean diferenciaHoraMedico = medico.getCitasPendientes().stream()
                 .anyMatch(cita -> cita.getFechaHoraCita().isAfter(horaLimite));
     
-        return crucesPaciente || crucesMedico || diferenciaHoraPaciente || diferenciaHoraDoctor;
+        return crucesPaciente || crucesMedico || diferenciaHoraPaciente || diferenciaHoraMedico;
     }
+
+    //Metodo que cancela una cita determinada para luego eliminarla de sus listas correspondientes 
+    //asegurandose que esta exista dentro de las citas programadas de cada uno, 
+    //por ultimo se agrega al historial de citas del consultorio
 
     public void cancelarCita(Cita cita) {
         cita.setEstadoCita(EstadoCita.CANCELADA);
@@ -114,17 +128,19 @@ public class AdministradorCitas implements Sujeto {
         consultorio.agregarCitaAlHistorial(cita);
     }
 
+    //Metodo que finaliza una cita determinada para luego eliminarla de sus listas correspondientes 
+    //asegurandose que esta exista dentro de las citas programadas de cada uno, 
+    //por ultimo se agrega al historial de citas del consultorio
+
     public void finalizarCita(Cita cita) {
         cita.setEstadoCita(EstadoCita.FINALIZADA);
-        Medico doctorAsociado = cita.getMedico();
-        Paciente pacienteAsociado = cita.getPaciente();
-        if (doctorAsociado != null) {
-            doctorAsociado.eliminarCitaPendiente(cita);
+        if (consultorio.valdidarCitaMedico(cita, cita.getMedico())){
+        cita.getMedico().eliminarCitaPendiente(cita);
+            }
+        else if(consultorio.valdidarCitaPaciente(cita, cita.getPaciente())){
+            cita.getPaciente().eliminarCitaProgramada(cita);
         }
-        if (pacienteAsociado != null) {
-            pacienteAsociado.eliminarCitaProgramada(cita);
-        }
-    consultorio.agregarCitaAlHistorial(cita);
+        consultorio.agregarCitaAlHistorial(cita);
     }
 
 }
